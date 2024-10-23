@@ -6,6 +6,11 @@ let myLeads = []
 let localStorageLeads = JSON.parse(localStorage.getItem("myLeads"))
 console.log(localStorageLeads)
 
+if (localStorageLeads) {
+    myLeads = localStorageLeads
+    renderLeads()
+}
+
 // On button click 1. Adds the value to myLeads array, 2. Clears the input field, 3. Initiates the renderLeads function
 buttonEl.addEventListener("click", function() {
     myLeads.push(inputEl.value)
