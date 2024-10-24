@@ -9,13 +9,27 @@ console.log(localStorageLeads)
 
 if (localStorageLeads) {
     myLeads = localStorageLeads
-    renderLeads()
+    render(myLeads)
+}
+
+function render(leads) {
+    let listItems = ""
+    for (let i = 0; i < leads.length; i++) {
+    listItems += `
+        <li>
+            <a target='_blank' href='${leads[i]}'>
+                ${leads[i]} 
+            </a>
+        </li>
+    `
+    }
+    ulEl.innerHTML = listItems
 }
 
 deleteBtn.addEventListener("dblclick", function() {
     myLeads=[]
     localStorage.clear()
-    renderLeads()
+    render(myLeads)
 })
 
 // On button click 1. Adds the value to myLeads array, 2. Clears the input field, 3. Initiates the renderLeads function
@@ -23,20 +37,6 @@ buttonEl.addEventListener("click", function() {
     myLeads.push(inputEl.value)
     inputEl.value = ""
     localStorage.setItem("myLeads", JSON.stringify(myLeads))
-    renderLeads()
+    render(myLeads)
 })
 
-// 1. Defines empty string, 2. Executes For loop using string template to add LI and A tag from the array, 3. Renders listItems in the unorderlist ID
-function renderLeads() {
-    let listItems = ""
-    for (let i = 0; i < myLeads.length; i++) {
-    listItems += `
-        <li>
-            <a target='_blank' href='${myLeads[i]}'>
-                ${myLeads[i]} 
-            </a>
-        </li>
-    `
-    }
-    ulEl.innerHTML = listItems
-}
