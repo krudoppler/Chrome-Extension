@@ -1,26 +1,28 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"
+import { getDatabase, 
+        ref,
+        push} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js"
+
+const firebaseConfig = {
+    databaseURL: "https://leads-tracker-app-922e2-default-rtdb.firebaseio.com/"
+}
+
+const app = initializeApp(firebaseConfig)
+const database = getDatabase(app)
+const referenceInDB = ref(database, "leads")
+
+
 const buttonEl = document.getElementById("input-btn")
 const inputEl = document.getElementById("input-el")
 const ulEl = document.getElementById("ul-el")
 const deleteBtn = document.getElementById("delete-btn")
-const tabBtn = document.getElementById("tab-btn")
-let myLeads = []
-
-let localStorageLeads = JSON.parse(localStorage.getItem("myLeads"))
-console.log(localStorageLeads)
-
-if (localStorageLeads) {
-    myLeads = localStorageLeads
-    render(myLeads)
-}
 
 
-tabBtn.addEventListener("click", function(){
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-        myLeads.push(tabs[0].url)
-        localStorage.setItem("myLeads", JSON.stringify(myLeads) )
-        render(myLeads)
+buttonEl.addEventListener("click", function(){
+    push(referenceInDB, inputEl.value)
+    inputEl.value=""
     })
-})
+ 
 
 function render(leads) {
     let listItems = ""
@@ -37,16 +39,7 @@ function render(leads) {
 }
 
 deleteBtn.addEventListener("dblclick", function() {
-    myLeads=[]
-    localStorage.clear()
-    render(myLeads)
+
 })
 
-// On button click 1. Adds the value to myLeads array, 2. Clears the input field, 3. Initiates the renderLeads function
-buttonEl.addEventListener("click", function() {
-    myLeads.push(inputEl.value)
-    inputEl.value = ""
-    localStorage.setItem("myLeads", JSON.stringify(myLeads))
-    render(myLeads)
-})
 
